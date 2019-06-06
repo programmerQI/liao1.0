@@ -23,7 +23,7 @@ public class ClientThread extends Thread{
     private BufferedWriter bufferedWriter;
     private OutputStreamWriter outputStreamWriter;
 
-    private String message;
+    //private String message;
 
     public ClientThread(String ip, int port, ChatActivity activity)
     {
@@ -87,9 +87,32 @@ public class ClientThread extends Thread{
     public void receivingMessagesFromServer()
     {
 
+        // This is a UI thread that is used to add message to the chat channel;
+        class UIThread extends Thread {
+
+            private String message;
+
+            public UIThread(String message){
+
+                this.message = message;
+
+            }
+
+            @Override
+            public void run() {
+
+                super.run();
+
+                activity.addStringToChatPannel(Toolkit.rot13_decrypt(message));
+
+            }
+        }
+
+
+
         System.out.println("Prepare to receive message from server.");
 
-        message = "";
+        String message = "";
 
         try{
 
@@ -98,16 +121,9 @@ public class ClientThread extends Thread{
 
                 System.out.println("A message has been received.");
 
-                activity.runOnUiThread(new Runnable() {
+                //System.out.println(message);
 
-                    @Override
-                    public void run() {
-
-                        activity.addStringToChatPannel(Toolkit.rot13_decrypt(message));
-
-                    }
-
-                });
+                activity.runOnUiThread(new UIThread(message));
 
             }
 
@@ -153,7 +169,7 @@ public class ClientThread extends Thread{
             return;
         }
 
-        printWriter.println(Toolkit.rot13_encrypt(message));
+        printWriter.println(Toolkit.rot13_encrypt(activity.getUser().getUsername() + ": " + message));
         printWriter.flush();
 
         System.out.println("A message has been send to server.");
@@ -188,6 +204,31 @@ public class ClientThread extends Thread{
 
             }
         }
+
+        if(bufferedWriter != null)
+        {
+            try {
+
+                bufferedWriter.close();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+
+        if(outputStreamWriter != null)
+        {
+            try {
+                outputStreamWriter.close();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
+            }
+        }
+
 
         if(printWriter != null)
         {

@@ -71,7 +71,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     closeKeyboard();
 
-                    chat_srollView.fullScroll(View.FOCUS_DOWN);
+                    //chat_srollView.fullScroll(View.FOCUS_DOWN);
 
                 }
                 else if(v == chat_pannel)
@@ -87,6 +87,16 @@ public class ChatActivity extends AppCompatActivity {
 
         chat_button.setOnClickListener(onClickListener);
         chat_pannel.setOnClickListener(onClickListener);
+        chat_pannel.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                chat_srollView.scrollTo(0, chat_pannel.getBottom());
+
+            }
+
+        });
 
         System.out.println("The UI component has been load.");
 
