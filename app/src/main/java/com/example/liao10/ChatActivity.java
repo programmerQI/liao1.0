@@ -15,12 +15,13 @@ import android.widget.TextView;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private static final String IP = "192.168.0.8";
-    private static final int PORT = 9900;
+    private static final String IP = "73.14.13.231";
+    private static final int PORT = 9816;
     private static final int DEFAULT_FONTSIZE = 16;
 
     private User user;
     private ClientThread thread;
+    private PollingThread pollingThread;
 
     private AlertDialog.Builder dialogBuilder;
     private InputMethodManager inputMethodManager;
@@ -109,6 +110,10 @@ public class ChatActivity extends AppCompatActivity {
 
         thread.start();
 
+        pollingThread = new PollingThread(this, IP, PORT, user.getUsername());
+
+        pollingThread.start();
+
         System.out.println("The client threat is running.");
 
         return 0;
@@ -165,6 +170,8 @@ public class ChatActivity extends AppCompatActivity {
 
         dialogBuilder.setTitle("Info:");
         dialogBuilder.setMessage("Connection lost!");
+        dialogBuilder.create();
+        dialogBuilder.show();
 
         onDestroy();
 
@@ -174,6 +181,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
 
         thread.interrupt();
+
+        pollingThread.interrupt();
 
         super.onDestroy();
     }

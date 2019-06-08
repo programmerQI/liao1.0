@@ -46,7 +46,7 @@ public class ClientThread extends Thread{
 
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            System.out.println("8761");
+            //System.out.println("8761");
 
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
 
@@ -54,7 +54,7 @@ public class ClientThread extends Thread{
 
             printWriter = new PrintWriter(socket.getOutputStream());
 
-            System.out.println("9012");
+            //System.out.println("9012");
 
             // Send the client identification
             printWriter.println(Toolkit.rot13_encrypt(activity.getUser().getUsername()));
