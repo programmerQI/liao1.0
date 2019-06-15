@@ -179,6 +179,8 @@ public class ClientThread extends Thread{
     public void quietCloseStreams()
     {
 
+        System.out.println("89");
+
         if(bufferedReader != null)
         {
             try {
@@ -191,6 +193,8 @@ public class ClientThread extends Thread{
 
             }
         }
+
+        System.out.println("14");
 
         if(inputStreamReader != null)
         {
@@ -205,6 +209,8 @@ public class ClientThread extends Thread{
             }
         }
 
+        System.out.println("90");
+
         if(bufferedWriter != null)
         {
             try {
@@ -217,6 +223,8 @@ public class ClientThread extends Thread{
 
             }
         }
+
+        System.out.println("57");
 
         if(outputStreamWriter != null)
         {
@@ -279,14 +287,19 @@ public class ClientThread extends Thread{
 
     @Override
     public void interrupt() {
+        super.interrupt();
 
-        quietCloseStreams();
+        System.out.println("341");
 
-        quietCloseSocket();
+        //quietCloseStreams();
+
+        System.out.println("669");
+
+        //quietCloseSocket();
+
+        System.out.println("106");
 
         System.out.println("The client thread is interrupting.");
-
-        super.interrupt();
 
     }
 }
